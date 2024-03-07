@@ -17,17 +17,34 @@ public class ExpenseServiceImp implements ExpenseService {
     public Iterable<Expense> getAllExpense() {
         return expenseRepository.findAll();
     }
-
     @Override
-    public void saveExpense(Expense expense) {
-        expenseRepository.save(expense);
+    public Expense findById(Long id){
+        if (expenseRepository.findById(id).isPresent()){
+            return expenseRepository.findById(id).get();
+        }
+        return null;
+    }
+    @Override
+    public Expense addExpense(Expense expense) {
+        return expenseRepository.save(expense);
     }
 
     @Override
-    public void findById(Long id) {         //add more code, if id is not present return null
-        expenseRepository.findById(id);
-    }
+    public Expense updatedExpense(Long id, Expense expense) {
 
+        Optional<Expense> optionalExpense = expenseRepository.findById(id);
+
+        if(optionalExpense.isEmpty()){
+            return null;
+        }
+
+        Expense updatedExpense = optionalExpense.get();
+        updatedExpense.setExpenseName(expense.getExpenseName());
+        updatedExpense.setExpenseType(expense.getExpenseType());
+        updatedExpense.setAmount(expense.getAmount());
+        expenseRepository.save(updatedExpense);
+        return updatedExpense;
+    }
     @Override
     public Expense deleteExpense(Long id) { //add more code, if id is not present return null
         Optional<Expense> optionalExpense = expenseRepository.findById(id);

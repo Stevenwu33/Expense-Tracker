@@ -1,15 +1,15 @@
 package com.fullstack.expensetracker.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import lombok.NoArgsConstructor;
 
 @Entity
+@Table(name="tbl_expenses")
+@NoArgsConstructor
 public class Expense {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
     private String expenseName ;
     @Enumerated
@@ -22,6 +22,8 @@ public class Expense {
         this.budgetType = expenseType;
         this.amount = amount;
     }
+
+
 
     public Long getId() {
         return id;
